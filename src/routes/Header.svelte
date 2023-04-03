@@ -10,7 +10,7 @@
         <a href="{base}/" class:active={routeId == "/"}>Lung X-Ray</a>
         <a href="{base}/soon" class:active={routeId == "/soon"}>Coming Soon</a>
     </div>
-    <a href="/login">
+    <a href="{base}/login">
         <div id="login">
             Login
         </div>
