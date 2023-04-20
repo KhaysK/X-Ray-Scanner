@@ -19,7 +19,7 @@
 
 <style>
     #navbar{
-        height: 70px;
+        min-height: 70px;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -27,6 +27,7 @@
         padding: 0 4rem;
         flex-shrink: 0;
         color: #22577A;
+        background-color: #fff;
         z-index: 5;
         font-size: 24px;
         -webkit-box-shadow: 0px 7px 10px -1px rgba(34, 60, 80, 0.2);
