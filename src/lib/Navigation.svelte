@@ -8,10 +8,10 @@
 			<a href="{base}/">Home</a>
 		</li>
 		<li>
-			<a href="{base}/history/dataset">Dataset</a>
+			<a href="{base}/profile/dataset">Dataset</a>
 		</li>
 		<li>
-			<a href="{base}/history/model">Model Info</a>
+			<a href="{base}/profile/model">Model Info</a>
 		</li>
 	</ul>
 </div>
