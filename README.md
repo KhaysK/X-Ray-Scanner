@@ -47,6 +47,16 @@ To use this repository, please follow the steps below:
         export FLASK_APP=server.py
         ```
 
+    * Optinally, you can enable debug mode:
+        * On Windows run:
+            ```
+            set FLASK_DEBUG=1
+            ```
+        * On Ubuntu run:
+            ```
+            export FLASK_DEBUG=1
+            ```
+
 6. Run the following command from the root directory to initialize database and sync it with migrations:
     ```
     flask db upgrade

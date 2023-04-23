@@ -17,7 +17,6 @@ def create_app():
         SECRET_KEY = 'super-secret',
         SQLALCHEMY_DATABASE_URI='sqlite:///app.db',
     )
-    app.config['DEBUG'] = True
 
     from db_models import User
     db.init_app(app)
@@ -43,4 +42,4 @@ def create_app():
 
 
 if __name__ == "__main__":
-    create_app().run(debug=True)
+    create_app().run()
