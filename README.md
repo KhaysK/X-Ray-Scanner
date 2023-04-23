@@ -7,11 +7,11 @@ This repository contains code for classifying Pneumonia X-Ray images.
 To use this repository, please follow the steps below:
 
 1. Set up a Python environment to ensure that you do not break your system. You can do this by running the following command:
-    * If python3 is recognized as just python in your system then run:
+    * If python v3 is recognized as just `python` in your system then run:
         ```
         python -m venv env
         ```
-    * Or if python3 is recognized as python3:
+    * Or if python v3 is recognized as `python3`:
         ```
         python3 -m venv env
         ```
@@ -23,7 +23,7 @@ To use this repository, please follow the steps below:
         ```
     * On Ubuntu run:
         ```
-        env/bin/activate
+        source env/bin/activate
         ```
 
 3. Install Python dependencies by running the following command from the root directory of the repository:
@@ -37,7 +37,22 @@ To use this repository, please follow the steps below:
     npm run build
     ```
 
-5. Start the server by running the following command:
+5. Run the following command to set FLASK_APP to specify which file is the starting point:
+    * On Windows run:
+        ```
+        set FLASK_APP=server.py
+        ```
+    * On Ubuntu run:
+        ```
+        export FLASK_APP=server.py
+        ```
+
+6. Run the following command from the root directory to initialize database and sync it with migrations:
     ```
-    python server.py
+    flask db upgrade
+    ```
+
+7. Start the server by running the following command:
+    ```
+    flask run
     ``` 

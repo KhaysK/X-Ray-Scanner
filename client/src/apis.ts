@@ -1,22 +1,27 @@
 import {user} from './stores'
 
-export async function login(username: string, password: string): Promise<User>{
+export async function login(username: string, password: string): Promise<LoginResponse>{
     const response = await fetch('/api/login',{
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({username, password})
     });
 
-    if (!response.ok){
-        throw new Error('Login failed');
-    }
-
-    const loggedUser: User = await response.json(); 
-    return loggedUser;
+    const data: LoginResponse = await response.json();
+    return data;
 }
 
+
+export async function register(username: string, password: string, confirmPassword: string): Promise<RegisterResponse>{
+    const response = await fetch('/api/register', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({username, password, confirmPassword})
+    });
+    
+    const data: RegisterResponse = await response.json();
+    return data;
+}
 
 export async function getUser(): Promise<User | null>{
     try{

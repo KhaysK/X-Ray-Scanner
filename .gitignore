@@ -1,6 +1,7 @@
 __pycache__/
 env/
 imageStorage/*
+instance
 
 client/.DS_Store
 client/node_modules

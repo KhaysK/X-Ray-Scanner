@@ -36,6 +36,11 @@
                 Login
             </div>
         </a>
+        <a href="{base}/register">
+            <div id="register">
+                Register
+            </div>
+        </a>
     {:else}
     <div id="links-container">
         <a href="{base}/profile">
