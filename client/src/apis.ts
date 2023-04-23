@@ -23,12 +23,8 @@ export async function getUser(): Promise<User | null>{
         const response = await fetch('/api/getuser');
         
         if (response.ok){
-            const body = await response.json();
-            if (body){
-                return body as User;
-            }else{
-                throw new Error('Response body is empty.');
-            }
+            const data: User = await response.json();
+            return data;
         }else{
             throw new Error(`Status:${response.status}; Error: ${response.statusText} `);
         }
@@ -49,3 +45,16 @@ export async function clearUser(){
     await fetch('/api/logout');
     setUser(null);
 }
+
+
+export async function getPrediction(file: File): Promise<PredictionResult>{
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch('/api/upload',{
+        method: 'POST',
+        body: formData
+    });
+
+    const data: PredictionResult = await response.json();
+    return data;
+} 

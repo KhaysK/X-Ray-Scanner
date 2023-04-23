@@ -1,11 +1,9 @@
 <script lang="ts">
+	import { getPrediction } from "../apis";
+
 	let fileDragger: HTMLDivElement;
 	let fileName: string;
 
-	interface ResponseData{
-		result?: string;
-		error?: string;
-	}
 
 	function draggerHandler(event: DragEvent) {
 		const files = event.dataTransfer?.files;
@@ -26,34 +24,18 @@
 	}
 
 	async function uploadFileHandler(file: File) {
-		const formData = new FormData();
-		formData.append('file', file);
-		
-		const response = await fetch('/api/upload',{
-			method: 'POST',
-			body: formData
-		});
-
-		await handleResponse(response);
-	}
-
-	async function handleResponse(response: Response):Promise<string>{
-		if (response.status == 200){
-			const data: ResponseData = await response.json();
-			if (data.result){
-				alert(`Result: ${data.result}`)
-				return data.result;
+		try{
+			const prediction = await getPrediction(file);
+			if(prediction.result){
+				alert(`RESULT: ${prediction.result}`);
+			}else{
+				alert(`ERROR: ${prediction.error}`);
 			}
-			else{
-				throw new Error(`ERROR: ${JSON.stringify(data)}`);
-			}
-		}else{
-			const errorData: ResponseData = await response.json();
-			const errorMessage: string = errorData.error || 'Unknown error occured';
-			alert(errorMessage)
-			throw new Error(errorMessage);
+		}catch(error){
+			console.error(`ERROR: ${error}`);
 		}
 	}
+
 </script>
 
 <div
