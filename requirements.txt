@@ -1,6 +1,5 @@
 flask
-flask-cors
-flask-jwt-extended
+Flask-Migrate
 requests
 Pillow
 numpy

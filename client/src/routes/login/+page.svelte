@@ -10,11 +10,16 @@
         event.preventDefault();
 
         try{
-            setUser(await login(username, password));
-            goto('/profile');
+            const response = await login(username, password);
+            if(response.username){
+                setUser({'username': response.username});
+                goto('/profile');
+            }else{
+                error = response.error || 'Empty error message was by the server';
+            }
         }catch(e){
-            error = 'Invalid username or password';
-            console.log(error)
+            error = 'Ooops, something went wrong';
+            console.log(e)
         }
     };
 

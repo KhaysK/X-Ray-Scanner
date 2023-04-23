@@ -10,6 +10,16 @@ declare global {
 		result?: string;
 		error?: string;
 	}
+
+	interface LoginResponse{
+		username?: string;
+		error?: string;
+	}
+
+	interface RegisterResponse{
+		username?: string;
+		error?: string;
+	}
 }
 
 export {};
