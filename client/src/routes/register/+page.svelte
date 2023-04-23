@@ -11,26 +11,29 @@
     const handleSubmit = async (event: Event) =>{
         event.preventDefault();
         
-        if (password !== confirmPassword){
+        if (!username){
+            error = 'Username field is required';
+        }else if (!password){
+            error = 'Password field is required';
+        }else if (!confirmPassword){
+            error = 'Confirm Password field is required'
+        }else if (password !== confirmPassword){
             error = 'Passwords do not match';
-        }
-
-        try{
-            const response = await register(username, password, confirmPassword);
-            if (response.username){
-                setUser({'username': response.username});
-                goto(`${base}/`);
-            }else{
-                error = response.error || 'Empty error message was sent by the server'
+        }else{
+            try{
+                const response = await register(username, password, confirmPassword);
+                if (response.username){
+                    setUser({'username': response.username});
+                    goto(`${base}/`);
+                }else{
+                    error = response.error || 'Empty error message was sent by the server'
+                }
+            }catch(e){
+                error = 'Ooops, something went wrong';
+                console.log(e);
             }
-        }catch(e){
-            error = 'Ooops, something went wrong';
-            console.log(e);
         }
     }
-
-
-    
 </script>
 
 

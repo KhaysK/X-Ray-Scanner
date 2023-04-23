@@ -37,7 +37,7 @@ To use this repository, please follow the steps below:
     npm run build
     ```
 
-5. Run the following command to set FLASK_APP to specify which file is the starting point:
+5. Run the following command to set `FLASK_APP` to specify which file is the starting point:
     * On Windows run:
         ```
         set FLASK_APP=server.py
