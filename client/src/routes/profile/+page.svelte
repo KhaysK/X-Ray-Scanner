@@ -5,6 +5,7 @@
     import { page } from '$app/stores';
     import { history } from '../../apis';
 	import { onDestroy } from 'svelte';
+    import { base } from '$app/paths';
     
     $: username = $user?.username; 
     $: message = `Welcome ${username}`;
@@ -35,6 +36,7 @@
 
 <div class="just-fixed">
     <h1>{message}</h1>
+    <a href="{base}/edit" style="font-size:30px">Edit</a>
     <ul>
         {#each imageDatas as imageData}
             <li>
@@ -43,6 +45,7 @@
                 <p>Result: {imageData.result}</p>
                 <p>Created at: {imageData.created_at}</p>
                 <p>Username: {imageData.username}</p>
+                <p>Status: {imageData.status}</p>
             </li>
         {/each}
     </ul>

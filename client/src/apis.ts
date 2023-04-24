@@ -31,6 +31,20 @@ export async function history(): Promise<HistoryResponse>{
 }
 
 
+export async function updateImageDataStatus(imageName: string, imageStatus: string): Promise<UpdateImageDataResponse>{
+    const response = await fetch('/api/update/image', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+            'image_name': imageName,
+            'image_status': imageStatus
+        })
+    });
+
+    const data: UpdateImageDataResponse = await response.json();
+    return data;
+}
+
 export async function getUser(): Promise<User | null>{
     try{
         const response = await fetch('/api/getuser');

@@ -10,17 +10,23 @@
     const handleSubmit = async (event: Event) =>{
         event.preventDefault();
 
-        try{
-            const response = await login(username, password);
-            if(response.username){
-                setUser({'username': response.username});
-                goto('/profile');
-            }else{
-                error = response.error || 'Empty error message was by the server';
+        if (!username) {
+			error = 'Username field is required';
+		} else if (!password) {
+			error = 'Password field is required';
+		}else{
+            try{
+                const response = await login(username, password);
+                if(response.username){
+                    setUser({'username': response.username});
+                    goto('/profile');
+                }else{
+                    error = response.error || 'Empty error message was by the server';
+                }
+            }catch(e){
+                error = 'Ooops, something went wrong';
+                console.log(e)
             }
-        }catch(e){
-            error = 'Ooops, something went wrong';
-            console.log(e)
         }
     };
 </script>

@@ -27,6 +27,16 @@ declare global {
 		result: string;
 		created_at: string;
 		username: string;
+		status: string;
+	}
+
+	interface HistoryResponse{
+		imageDatas: ImageData[];
+	}
+
+	interface UpdateImageDataResponse{
+		imageData?: ImageData;
+		error?: string;
 	}
 }
 
