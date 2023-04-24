@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { getPrediction } from "../apis";
+	import { getPrediction } from '../apis';
+	import Login from '../lib/Login.svelte';
+	import Register from '../lib/Register.svelte';
+	import { loginToggle } from '../stores';
 
-	let fileDragger: HTMLDivElement;
 	let fileName: string;
-
 
 	function draggerHandler(event: DragEvent) {
 		const files = event.dataTransfer?.files;
-		if (files?.length){
+		if (files?.length) {
 			const file = files[0];
 			uploadFileHandler(file);
 		}
-
 	}
 
 	function selectorHandler(event: Event) {
@@ -22,28 +22,34 @@
 
 		uploadFileHandler(file);
 	}
-
+	
 	async function uploadFileHandler(file: File) {
-		try{
+		try {
 			const prediction = await getPrediction(file);
-			if(prediction.result){
+			if (prediction.result) {
 				alert(`RESULT: ${prediction.result}`);
-			}else{
+			} else {
 				alert(`ERROR: ${prediction.error}`);
 			}
-		}catch(error){
+		} catch (error) {
 			console.error(`ERROR: ${error}`);
 		}
 	}
-
+	loginToggle.set('');
 </script>
+
+{#if $loginToggle == 'Login'}
+	<Login />
+{:else if $loginToggle == 'Register'}
+	<Register />
+{/if}
 
 <div
 	id="container"
-	bind:this={fileDragger}
 	on:drop|preventDefault={(e) => draggerHandler(e)}
 	on:dragover|preventDefault={() => {}}
 >
+	
 	<div id="titleInfo">
 		<h1>Lung X-Ray</h1>
 		<span>Determines the presence of lung inflammation by X-ray image</span>
@@ -54,7 +60,6 @@
 		accept="image/*"
 		on:change|preventDefault={(e) => selectorHandler(e)}
 		hidden
-		bind:this={fileDragger}
 	/>
 	<label for="fileSelector">Select File</label>
 	<span style="margin-top: -90px; text-align:center;">Or Drag and Drop it <br />{fileName}</span>
