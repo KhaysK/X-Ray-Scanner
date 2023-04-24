@@ -4,6 +4,14 @@
 	import Register from '../lib/Register.svelte';
 	import { loginToggle } from '../stores';
 
+	let resultImg: HTMLImageElement;
+	let resultTxt: HTMLParagraphElement;
+	let isResultReady: boolean = false;
+
+	function toggleReady() {
+		isResultReady = !isResultReady;
+	}
+	
 	function draggerHandler(event: DragEvent) {
 		const files = event.dataTransfer?.files;
 		if (files?.length) {
@@ -25,6 +33,8 @@
 		try {
 			const prediction = await getPrediction(file);
 			if (prediction.result) {
+				if(!isResultReady)
+					toggleReady();
 				displayResult(file, prediction.result);
 			} else {
 				alert(`ERROR: ${prediction.error}`);
@@ -33,22 +43,20 @@
 			console.error(`ERROR: ${error}`);
 		}
 	}
-	let resultPanel: HTMLDivElement;
+
 	function displayResult(file: File, result: string) {
 		const reader = new FileReader();
 
 		reader.onload = () => {
-			const img = resultPanel.getElementsByTagName('img')[0];
-			img.src = reader.result as string;
-
-			const text = resultPanel.getElementsByTagName('p')[0];
-			text.textContent = `Result: ${result}`;
+			resultImg.src = reader.result as string;
+			resultTxt.textContent = `Result: ${result}`;
 		};
 
 		if (file) {
 			reader.readAsDataURL(file);
 		}
 	}
+
 	loginToggle.set('');
 </script>
 
@@ -76,10 +84,12 @@
 	/>
 	<label for="fileSelector">Select File</label>
 	<span style="margin-top: -90px; text-align:center;">Or Drag and Drop it</span>
-	<div id="resultPanel" bind:this={resultPanel}>
-		<img src="" alt="">
-		<p></p>
-	</div>
+	{#if isResultReady}
+		<div id="resultPanel">
+			<img src="" alt="" bind:this={resultImg} />
+			<p bind:this={resultTxt} />
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -130,9 +140,7 @@
 		height: 350px;
 		margin-right: 20px;
 		border-radius: 10px;
-		border: 1px solid #f3f0ec;
 	}
-	
 
 	p {
 		font-size: 24px;
