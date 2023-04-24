@@ -4,8 +4,6 @@
 	import Register from '../lib/Register.svelte';
 	import { loginToggle } from '../stores';
 
-	let fileName: string;
-
 	function draggerHandler(event: DragEvent) {
 		const files = event.dataTransfer?.files;
 		if (files?.length) {
@@ -22,17 +20,33 @@
 
 		uploadFileHandler(file);
 	}
-	
+
 	async function uploadFileHandler(file: File) {
 		try {
 			const prediction = await getPrediction(file);
 			if (prediction.result) {
-				alert(`RESULT: ${prediction.result}`);
+				displayResult(file, prediction.result);
 			} else {
 				alert(`ERROR: ${prediction.error}`);
 			}
 		} catch (error) {
 			console.error(`ERROR: ${error}`);
+		}
+	}
+	let resultPanel: HTMLDivElement;
+	function displayResult(file: File, result: string) {
+		const reader = new FileReader();
+
+		reader.onload = () => {
+			const img = resultPanel.getElementsByTagName('img')[0];
+			img.src = reader.result as string;
+
+			const text = resultPanel.getElementsByTagName('p')[0];
+			text.textContent = `Result: ${result}`;
+		};
+
+		if (file) {
+			reader.readAsDataURL(file);
 		}
 	}
 	loginToggle.set('');
@@ -49,7 +63,6 @@
 	on:drop|preventDefault={(e) => draggerHandler(e)}
 	on:dragover|preventDefault={() => {}}
 >
-	
 	<div id="titleInfo">
 		<h1>Lung X-Ray</h1>
 		<span>Determines the presence of lung inflammation by X-ray image</span>
@@ -62,7 +75,11 @@
 		hidden
 	/>
 	<label for="fileSelector">Select File</label>
-	<span style="margin-top: -90px; text-align:center;">Or Drag and Drop it <br />{fileName}</span>
+	<span style="margin-top: -90px; text-align:center;">Or Drag and Drop it</span>
+	<div id="resultPanel" bind:this={resultPanel}>
+		<img src="" alt="">
+		<p></p>
+	</div>
 </div>
 
 <style>
@@ -96,7 +113,29 @@
 		line-height: 6rem;
 		transition: all 0.2s ease-in;
 	}
+
 	label:hover {
 		background-color: #38a3a5;
+	}
+
+	#resultPanel {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		margin-top: -60px;
+	}
+
+	img {
+		width: 400px;
+		height: 350px;
+		margin-right: 20px;
+		border-radius: 10px;
+		border: 1px solid #f3f0ec;
+	}
+	
+
+	p {
+		font-size: 24px;
+		align-self: flex-start;
 	}
 </style>
