@@ -23,6 +23,14 @@ export async function register(username: string, password: string, confirmPasswo
     return data;
 }
 
+export async function history(): Promise<HistoryResponse>{
+    const response = await fetch('/api/history');
+
+    const data: HistoryResponse = await response.json();
+    return data;
+}
+
+
 export async function getUser(): Promise<User | null>{
     try{
         const response = await fetch('/api/getuser');

@@ -20,6 +20,14 @@ declare global {
 		username?: string;
 		error?: string;
 	}
+
+	interface ImageData{
+		name: string;
+		ext: string;
+		result: string;
+		created_at: string;
+		username: string;
+	}
 }
 
 export {};

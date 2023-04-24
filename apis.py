@@ -3,7 +3,7 @@ from flask import (
 )
 
 from middlewares import login_form_validator, register_form_validator, login_required, logout_required
-from db_utils import get_user, get_user_by, get_user_by_username, create_user
+from db_utils import get_user, get_user_by, get_user_by_username, create_user, get_image_datas, get_user_image_datas, create_image_data
 from db_models import User
 import os, uuid
 import model
@@ -40,6 +40,37 @@ def load_logged_in_user():
     else:
         g.user = get_user(user_id)
         print('load_logged_in_user:', g.user)
+        image_datas = get_user_image_datas(g.user)
+        for image_data in image_datas:
+            print(image_data)
+
+
+@bp.route('/history')
+@login_required
+def history():
+    image_datas = []
+    if g.user.is_admin:
+        image_datas = get_image_datas()
+    else:
+        image_datas = get_user_image_datas(g.user)
+    
+    datas = []
+    for image_data in image_datas:
+        username = ''
+        if image_data.user is not None:
+            username = image_data.user.username
+        datas.append({
+            'name': image_data.name,
+            'ext': image_data.ext,
+            'result': image_data.result,
+            'created_at': image_data.created_at,
+            'username': username,
+        })
+    
+    response = {
+        'imageDatas': datas
+    }
+    return jsonify(response)
 
 
 @bp.route('/getuser')
@@ -115,11 +146,18 @@ def upload_file():
     if file_extension not in allowed_extensions:
         return jsonify({'error': f"File should have one of {allowed_extensions} extensions"}), 400
 
-    filename = str(uuid.uuid4()) + file_extension
 
+    name = str(uuid.uuid4())
+    filename = name + file_extension
     
     filepath = os.path.join('imageStorage', filename)
     file.save(filepath)
 
-    return jsonify({'result': model.get_prediction(filepath) })
+    result = model.get_prediction(filepath)
+
+    user_id = None
+    if g.user is not None:
+        create_image_data(name, file_extension, result, g.user.id)
+
+    return jsonify({'result': result })
 
