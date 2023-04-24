@@ -2,8 +2,17 @@ from flask import (
     Blueprint, request, g, session, jsonify
 )
 
-from middlewares import login_form_validator, register_form_validator, login_required, logout_required
-from db_utils import get_user, get_user_by, get_user_by_username, create_user, get_image_datas, get_user_image_datas, create_image_data
+from middlewares import (
+    login_form_validator, register_form_validator, login_required, logout_required, admin_required, update_image_validator
+)
+from db_utils import (
+    get_user, get_user_by, get_user_by_username, create_user, 
+    get_image_data_status, get_image_data_statuses,
+    update_image_data_status,
+    get_image_data, get_image_datas, get_user_image_datas, 
+    create_image_data, 
+    image_data_to_dict
+)
 from db_models import User
 import os, uuid
 import model
@@ -56,16 +65,7 @@ def history():
     
     datas = []
     for image_data in image_datas:
-        username = ''
-        if image_data.user is not None:
-            username = image_data.user.username
-        datas.append({
-            'name': image_data.name,
-            'ext': image_data.ext,
-            'result': image_data.result,
-            'created_at': image_data.created_at,
-            'username': username,
-        })
+        datas.append(image_data_to_dict(image_data))
     
     response = {
         'imageDatas': datas
@@ -127,6 +127,24 @@ def register(username, password, confirmPassword):
         return jsonify(response)
 
 
+@bp.route('/update/image', methods=['POST'])
+@login_required
+@admin_required
+@update_image_validator
+def update_image(name, status):
+    image_data = get_image_data(name)
+    if image_data is None:
+        response = {'error': "Image was not found"}
+        return jsonify(response), 404
+    image_data_status = get_image_data_status(status)
+    if not image_data_status:
+        response = {'error': f"image_status should one of the {get_image_data_statuses()}"}
+        return jsonify(response), 400
+    update_image_data_status(image_data, image_data_status)
+    response = {'imageData':image_data_to_dict(image_data)}
+    return jsonify(response)
+
+
 @bp.route('/upload', methods=['POST'])
 def upload_file():
     
@@ -152,10 +170,11 @@ def upload_file():
     
     filepath = os.path.join('imageStorage', filename)
     file.save(filepath)
-
-    result = model.get_prediction(filepath)
-
-    user_id = None
+    try:
+        result = model.get_prediction(filepath)
+    except:
+        return jsonify({'error': "Server could not deal with your file"}), 500
+    
     if g.user is not None:
         create_image_data(name, file_extension, result, g.user.id)
 
