@@ -2,20 +2,50 @@
 	import { goto } from '$app/navigation';
     import { user } from '../../stores';
 	import { onMount } from 'svelte';
+    import { page } from '$app/stores';
+    import { history } from '../../apis';
+	import { onDestroy } from 'svelte';
     
     $: username = $user?.username; 
     $: message = `Welcome ${username}`;
+
+    let imageDatas: ImageData[] = [];
+
+
+    const unsubscribe = page.subscribe(async (value)=>{
+        try{
+            const response = await history();
+            if (response.imageDatas){
+                imageDatas = response.imageDatas;
+            }
+        }catch(e){
+            console.log(`ERROR:${e}`);
+        }
+    });
 
     onMount(()=>{
         if( username === undefined){
             goto('/');
         }
-    })
+    });
+
+    onDestroy(unsubscribe);
 
 </script>
 
 <div class="just-fixed">
     <h1>{message}</h1>
+    <ul>
+        {#each imageDatas as imageData}
+            <li>
+                <p>Name: {imageData.name}</p>
+                <p>Extension: {imageData.ext}</p>
+                <p>Result: {imageData.result}</p>
+                <p>Created at: {imageData.created_at}</p>
+                <p>Username: {imageData.username}</p>
+            </li>
+        {/each}
+    </ul>
 </div>
 
 
