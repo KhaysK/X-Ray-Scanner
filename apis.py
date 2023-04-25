@@ -1,5 +1,5 @@
 from flask import (
-    Blueprint, request, g, session, jsonify
+    Blueprint, request, g, session, jsonify, send_file
 )
 
 from middlewares import (
@@ -11,7 +11,8 @@ from db_utils import (
     update_image_data_status,
     get_image_data, get_image_datas, get_user_image_datas, 
     create_image_data, 
-    image_data_to_dict
+    image_data_to_dict,
+    get_image_path
 )
 from db_models import User
 import os, uuid
@@ -145,6 +146,23 @@ def update_image(name, status):
     return jsonify(response)
 
 
+
+@bp.route('/get/image/<name>')
+@login_required
+def get_image(name):
+    image_data = get_image_data(name)
+    if image_data is None:
+        response = {'error': "Image was not found"}
+        return jsonify(response), 404
+    filepath = get_image_path(image_data.name, image_data.ext)
+    try:
+        return send_file(filepath, mimetype='image/gif')
+    except FileNotFoundError:
+        response = {'error': f"Something went wrong while trying to send the file for {name}"}
+        return jsonify(response), 500
+
+
+
 @bp.route('/upload', methods=['POST'])
 def upload_file():
     
@@ -166,9 +184,7 @@ def upload_file():
 
 
     name = str(uuid.uuid4())
-    filename = name + file_extension
-    
-    filepath = os.path.join('imageStorage', filename)
+    filepath = get_image_path(name, file_extension)
     file.save(filepath)
     try:
         result = model.get_prediction(filepath)

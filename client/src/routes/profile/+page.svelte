@@ -40,12 +40,15 @@
     <ul>
         {#each imageDatas as imageData}
             <li>
-                <p>Name: {imageData.name}</p>
-                <p>Extension: {imageData.ext}</p>
-                <p>Result: {imageData.result}</p>
-                <p>Created at: {imageData.created_at}</p>
-                <p>Username: {imageData.username}</p>
-                <p>Status: {imageData.status}</p>
+                <img src={`/api/get/image/${imageData.name}`} alt="Example Image" width="300" height="300">
+                <div>
+                    <p>Name: {imageData.name}</p>
+                    <p>Extension: {imageData.ext}</p>
+                    <p>Result: {imageData.result}</p>
+                    <p>Created at: {imageData.created_at}</p>
+                    <p>Username: {imageData.username}</p>
+                    <p>Status: {imageData.status}</p>
+                </div>
             </li>
         {/each}
     </ul>

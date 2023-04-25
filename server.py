@@ -33,9 +33,11 @@ def create_app():
 
     @app.route("/<path:path>")
     def home(path):
+        print("home:", path)
         try:
             return send_from_directory('client/build', path)
         except NotFound:
+            print("home: not found redirecting to '/'")
             return redirect('/')
 
     return app
