@@ -1,65 +1,60 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-    import { user } from '../../stores';
+	import { user } from '../../stores';
 	import { onMount } from 'svelte';
-    import { page } from '$app/stores';
-    import { history } from '../../apis';
+	import { page } from '$app/stores';
+	import { history } from '../../apis';
 	import { onDestroy } from 'svelte';
-    import { base } from '$app/paths';
-    
-    $: username = $user?.username; 
-    $: message = `Welcome ${username}`;
+	import Diagnosis from '../../lib/Diagnosis.svelte';
 
-    let imageDatas: ImageData[] = [];
+	$: username = $user?.username;
+	$: message = `Welcome ${username}`;
 
+	let imageDatas: ImageData[] = [];
 
-    const unsubscribe = page.subscribe(async (value)=>{
-        try{
-            const response = await history();
-            if (response.imageDatas){
-                imageDatas = response.imageDatas;
-            }
-        }catch(e){
-            console.log(`ERROR:${e}`);
-        }
-    });
+	const unsubscribe = page.subscribe(async (value) => {
+		try {
+			const response = await history();
+			if (response.imageDatas) {
+				imageDatas = response.imageDatas;
+			}
+		} catch (e) {
+			console.log(`ERROR:${e}`);
+		}
+	});
 
-    onMount(()=>{
-        if( username === undefined){
-            goto('/');
-        }
-    });
+	onMount(() => {
+		if (username === undefined) {
+			goto('/');
+		}
+	});
 
-    onDestroy(unsubscribe);
-
+	onDestroy(unsubscribe);
 </script>
 
-<div class="just-fixed">
-    <h1>{message}</h1>
-    <a href="{base}/edit" style="font-size:30px">Edit</a>
-    <ul>
-        {#each imageDatas as imageData}
-            <li>
-                <img src={`/api/get/image/${imageData.name}`} alt="Example Image" width="300" height="300">
-                <div>
-                    <p>Name: {imageData.name}</p>
-                    <p>Extension: {imageData.ext}</p>
-                    <p>Result: {imageData.result}</p>
-                    <p>Created at: {imageData.created_at}</p>
-                    <p>Username: {imageData.username}</p>
-                    <p>Status: {imageData.status}</p>
-                </div>
-            </li>
-        {/each}
-    </ul>
+<div class="container">
+	{#each imageDatas as imageData}
+		<Diagnosis
+			imagePath={imageData.name}
+			patientName={imageData.username}
+			date={imageData.created_at}
+			diagnosis={imageData.result}
+			status={imageData.status}
+		/>
+	{/each}
 </div>
 
-
 <style>
-    .just-fixed {
+	.container {
 		background-color: #f1f1f1;
-		position: fixed;
-		top: 80px;
-		left: 300px;
-    }
+		border: none;
+		display: flex;
+		align-items: center;
+		height: 100%;
+		width: 100%;
+		flex-direction: column;
+		overflow: auto;
+		padding: 60px 0;
+		gap: 16px;
+	}
 </style>
