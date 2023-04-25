@@ -1,6 +1,9 @@
-build
-node_module
-.svelte-kit
+client/build
+client/node_modules
+client/.svelte-kit
+client/package-lock.json
 
 __pycache__
 instance
+.git
+env
