@@ -8,7 +8,6 @@
 	import Diagnosis from '../../lib/Diagnosis.svelte';
 
 	$: username = $user?.username;
-	$: message = `Welcome ${username}`;
 
 	let imageDatas: ImageData[] = [];
 

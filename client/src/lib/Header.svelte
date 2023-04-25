@@ -8,7 +8,7 @@
 	$: routeId = $page.route.id;
 
 	let username = '';
-    
+
 	const unsubscribe = user.subscribe((value) => {
 		if (!value) {
 			username = '';
@@ -30,7 +30,7 @@
 		<a href="{base}/soon" class:active={routeId == '/soon'}>Coming Soon</a>
 	</div>
 	{#if !username}
-		<a href="#" on:click={() => (loginToggle.set('Login'))}>
+		<a href="#" on:click={() => loginToggle.set('Login')}>
 			<div id="profile">Login</div>
 		</a>
 	{:else if routeId == '/profile' || routeId == '/profile/'}

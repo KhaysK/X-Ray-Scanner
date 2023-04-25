@@ -1,3 +1,7 @@
+<script>
+	import Status from "$lib/Status.svelte";
+
+</script>
 <div id="container">
 	<div>
 		<h1>Information about the Model</h1>
@@ -18,6 +22,7 @@
 			<li>Starting learning rate: 0.001</li>
 			<li>Minimum learning rate: 0.000001</li>
 		</ul>
+		<Status/>
 	</div>
 </div>
 
@@ -25,10 +30,12 @@
 	#container {
 		border: none;
 		display: flex;
-		justify-content: center;
+		flex-direction: column;
 		align-items: center;
 		height: 100%;
 		width: 100%;
+		overflow: auto;
+		padding: 60px 0;
 	}
 
 	div {

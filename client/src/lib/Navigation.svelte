@@ -8,9 +8,6 @@
 			<a href="{base}/">Home</a>
 		</li>
 		<li>
-			<a href="{base}/profile/dataset">Dataset</a>
-		</li>
-		<li>
 			<a href="{base}/profile/model">Model Info</a>
 		</li>
 	</ul>
@@ -49,7 +46,7 @@
 		text-align: center;
 	}
 
-	a{
+	a {
 		display: inline-block;
 		height: 100%;
 		width: 100%;
