@@ -1,5 +1,7 @@
+import os
 from db_models import User, ImageData, ImageDataStatus
 from server import db
+
 
 
 def get_user(user_id):
@@ -33,7 +35,7 @@ def update_image_data_status(image_data: ImageData, image_status: ImageDataStatu
     image_data.status = image_status
     db.session.commit()
 
-def get_image_data(image_name: str):
+def get_image_data(image_name: str) -> ImageData:
     return ImageData.query.get(image_name)
 
 def get_image_datas():
@@ -57,3 +59,6 @@ def image_data_to_dict(image_data: ImageData):
         'status': image_data.status.value if image_data.status else None,
         'username': image_data.user.username if image_data.user else None
     }
+
+def get_image_path(name : str, ext: str):
+    return os.path.join('imageStorage', name + ext)
