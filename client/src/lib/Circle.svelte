@@ -1,21 +1,16 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-
 	export let percentage: number = 91;
 	export let label: string = 'Accuracy';
-
 	const radius = 80;
 	const circumference: number = 2 * Math.PI * radius;
 	let offset: number = (circumference * (100 - percentage)) / 100;
-
 	function updateOffset() {
 		offset = (circumference * (100 - percentage)) / 100;
 	}
-
 	onMount(() => {
 		updateOffset();
 	});
-
 	$: {
 		updateOffset();
 	}
@@ -57,13 +52,11 @@
 	.circle-loading-bar-bg {
 		stroke-dasharray: 502.65;
 	}
-
 	.circle-loading-bar-progress {
 		stroke-dasharray: 502.65;
 		stroke-linecap: round;
 		transition: stroke-dashoffset 0.5s ease;
 	}
-
 	.circle-loading-bar-label {
 		font-size: 20px;
 		font-weight: bold;

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { setUser } from '../apis';
 	export let imagePath: string;
 	export let patientName: string;
 	export let date: string;

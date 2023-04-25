@@ -1,27 +1,27 @@
 // See https://kit.svelte.dev/docs/types#app
 // for information about these interfaces
 declare global {
-	
-	interface User{
+
+	interface User {
 		username: string;
 	}
 
-	interface PredictionResult{
+	interface PredictionResult {
 		result?: string;
 		error?: string;
 	}
 
-	interface LoginResponse{
+	interface LoginResponse {
 		username?: string;
 		error?: string;
 	}
 
-	interface RegisterResponse{
+	interface RegisterResponse {
 		username?: string;
 		error?: string;
 	}
 
-	interface ImageData{
+	interface ImageData {
 		name: string;
 		ext: string;
 		result: string;
@@ -30,14 +30,14 @@ declare global {
 		status: string;
 	}
 
-	interface HistoryResponse{
+	interface HistoryResponse {
 		imageDatas: ImageData[];
 	}
 
-	interface UpdateImageDataResponse{
+	interface UpdateImageDataResponse {
 		imageData?: ImageData;
 		error?: string;
 	}
 }
 
-export {};
+export { };

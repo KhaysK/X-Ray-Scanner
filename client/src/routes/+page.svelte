@@ -11,7 +11,7 @@
 	function toggleReady() {
 		isResultReady = !isResultReady;
 	}
-	
+
 	function draggerHandler(event: DragEvent) {
 		const files = event.dataTransfer?.files;
 		if (files?.length) {
@@ -33,8 +33,7 @@
 		try {
 			const prediction = await getPrediction(file);
 			if (prediction.result) {
-				if(!isResultReady)
-					toggleReady();
+				if (!isResultReady) toggleReady();
 				displayResult(file, prediction.result);
 			} else {
 				alert(`ERROR: ${prediction.error}`);

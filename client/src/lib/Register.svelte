@@ -9,9 +9,7 @@
 	let confirmPassword: string = '';
 	let error: string = '';
 
-	const handleSubmit = async (event: Event) => {
-		event.preventDefault();
-
+	const handleSubmit = async () => {
 		if (!username) {
 			error = 'Username field is required';
 		} else if (!password) {
@@ -51,7 +49,7 @@
 		{/if}
 	</div>
 
-	<form on:submit={handleSubmit}>
+	<form on:submit|preventDefault={handleSubmit}>
 		<div>
 			<label for="username">Username:</label>
 			<input type="text" id="username" bind:value={username} />
@@ -113,15 +111,14 @@
 		margin-bottom: 16px;
 	}
 
-    #closeBtn{
-        display: block;
-        position: absolute;
-        top: 0;
-        right: 0;
-        color: red;
-        font-size: 22px;
-        font-family: Arial, Helvetica, sans-serif;
-        margin: 10px;
-    }
-
+	#closeBtn {
+		display: block;
+		position: absolute;
+		top: 0;
+		right: 0;
+		color: red;
+		font-size: 22px;
+		font-family: Arial, Helvetica, sans-serif;
+		margin: 10px;
+	}
 </style>

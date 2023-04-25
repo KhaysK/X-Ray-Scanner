@@ -18,21 +18,17 @@
 		text-align: center;
         display: inline-block;
 	}
-
 	h3 {
 		margin-top: 0;
 		margin-bottom: 10px;
 	}
-
 	p {
 		font-size: 2em;
 		margin: 0;
 	}
-
 	.box:hover {
 		border-color: #4caf50;
 	}
-
 	.box:focus {
 		outline: none;
 		border-color: #4caf50;
